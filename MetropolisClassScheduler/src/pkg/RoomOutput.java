@@ -14,19 +14,21 @@ import javax.swing.JTextArea;
  */
 public class RoomOutput extends JTextArea{
     private String name;
-    private int code;
+    private int code, slots;
     public RoomOutput() { }
     
-    RoomOutput(int code, String name){
+    RoomOutput(int code, String name, int slots){
         this.code = code;
         this.name = name;
-        this.setText(this.name + "\nCódigo: " + this.code);
+        this.slots = slots;
+        this.setText(this.name + "\nCódigo: " + this.code + "\nCupos: " +  this.slots);
         this.setSize(180, 50);
     }
     
-    void setTextName(int code, String name){
+    void setTextName(int code, String name, int slots){
         this.code = code;
         this.name = name;
-        this.setText(this.name + "\nCódigo: " + this.code);
+        this.slots = slots;
+        this.setText(this.name + "\nCódigo: " + this.code + "\nCupos: " +  this.slots);
     }
 }

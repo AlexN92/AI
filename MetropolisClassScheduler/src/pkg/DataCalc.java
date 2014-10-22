@@ -12,6 +12,8 @@ package pkg;
  */
 public class DataCalc {
     
+    Normal n = new Normal();
+    
     // Generates a random room scheme, using the count of rooms and the Subjects
     // to sort.
     RoomScheme generateRandomScheme(int floors, int roomsPerFloor, Subject[] s){
@@ -52,7 +54,8 @@ public class DataCalc {
         
         for(int k=0; k<r.length; k++){
             for(int m=0; m<r[0].length; m++){
-                r[k][m] = new RoomOutput(s.schedule[j][i].rooms[k][m].getCode(), s.schedule[j][i].rooms[k][m].getName());
+                r[k][m] = new RoomOutput(s.schedule[j][i].rooms[k][m].getCode(), s.schedule[j][i].rooms[k][m].getName(),
+                                         s.schedule[j][i].rooms[k][m].getMaxStudents());
                 r[k][m].setEditable(false);
                 r[k][m].setLocation(5 + 185*k, 65 + 55*m);
             }
@@ -65,9 +68,29 @@ public class DataCalc {
         for(int k=0; k<r.length; k++){
             for(int m=0; m<r[0].length; m++){
                 r[k][m].setTextName(s.schedule[j][i].rooms[k][m].getCode(),
-                                    s.schedule[j][i].rooms[k][m].getName());
+                                    s.schedule[j][i].rooms[k][m].getName(),
+                                    s.schedule[j][i].rooms[k][m].getMaxStudents());
             }
         }
+    }
+    
+    Subject[] generateSubjectGroup(int size, int[] code, int[] slot, String[] name){
+        Subject[] s = new Subject[size];
+        for(int i=0; i<size; i++){
+            if(code[i] != 0){
+                s[i] = new Subject(code[i], slot[i], name[i]);
+            } else {
+                s[i] = new Subject(0, 0, "Libre");
+            }
+        } return s;
+    }
+    
+    int[] generateNormalDistSlots(int size, int avg, int stdDev){
+        int[] slot = new int[size];
+        
+        for(int i=0; i<slot.length; i++){
+            slot[i] = (int) n.Normal(avg, stdDev);
+        } return slot;
     }
     
     // Using the room scheme's fitness, fullRooms(int fitness) evaluates
@@ -87,8 +110,9 @@ public class DataCalc {
         for(int i=0; i<roomFitness.length; i++){
             for(int j=0; j<roomFitness[0].length; j++){
                 roomFitness[i][j] = getRoomFitness(s.schedule[i][j]);
-                System.out.print(roomFitness[i][j] + " ");
-            } System.out.println();
+            }
         }
+        
+        
     }
 }
