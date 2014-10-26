@@ -110,14 +110,13 @@ public class DataCalc {
     }
     
     // Metropolis' Algorithm - Annealing Simulation
-    Schedule MetropolisAlgorithm(Schedule s){
+    Schedule MetropolisAlgorithm(Schedule s, double coolRate, int quota){
         Schedule best = new Schedule(s.schedule);
-        double coolRate = 0.003;
+        int ce = 0;
         double temp = s.schedule.length * s.schedule[0].length *
                       s.schedule[0][0].rooms.length * s.schedule[0][0].rooms[0].length;
         
         while(temp > 1){
-            int ce = 0;
             for (RoomScheme[] schedule : s.schedule) {
                 for (int j = 0; j<s.schedule[0].length; j++) {
                     if (acceptanceProbability(ce, schedule[j].getFitness(), temp) > Math.random()) {
@@ -127,12 +126,10 @@ public class DataCalc {
                                     room[m].setMaxStudents((int)n.Normal(30, 5));
                                     room[m].setGroup(room[m].getGroup() + 1);
                                 }
-                                if (schedule[j].getFitness() < 0 && classCount(schedule[j], 0) > (s.schedule[0][0].rooms.length * s.schedule[0][0].rooms[0].length / 3)) {
-                                    if (room[m].getCode() == 0) {
-                                        int x = (int)(d.code.length * Math.random());
-                                        Subject t = new Subject(d.code[x], (int)n.Normal(30, 5), 1, d.subjects[x]);
-                                        room[m] = t;
-                                    }                                  
+                                if (schedule[j].getFitness() < 0 && classCount(schedule[j], 0) > quota && room[m].getCode() == 0) {
+                                    int x = (int)(d.code.length * Math.random());
+                                    Subject t = new Subject(d.code[x], (int)n.Normal(30, 5), 1, d.subjects[x]);
+                                    room[m] = t;                          
                                 }
                             }
                         }

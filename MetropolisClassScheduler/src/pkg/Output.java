@@ -36,7 +36,7 @@ public final class Output extends javax.swing.JFrame {
             }
         }
         fitness.setText("" + dc.getRoomFitness(s.schedule[roomList.getSelectedIndex()][floorList.getSelectedIndex()]));
-        setSize(5 + 185 * sched.length, 40 + 70 * sched[0].length);
+        setSize(5 + 185 * sched.length, 30 + 75 * sched[0].length);
     }
     
     @SuppressWarnings("unchecked")
@@ -50,7 +50,10 @@ public final class Output extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         fitness = new javax.swing.JLabel();
         algorithmButton = new javax.swing.JButton();
-        classCount = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        coolRateField = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        maxStudentsField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,12 +91,9 @@ public final class Output extends javax.swing.JFrame {
             }
         });
 
-        classCount.setText("Conteo de clases");
-        classCount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                classCountActionPerformed(evt);
-            }
-        });
+        jLabel3.setText("Tasa de enfriamiento");
+
+        jLabel4.setText("Espacios libres (máx.)");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,14 +109,19 @@ public final class Output extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fitness)))
+                        .addComponent(fitness)
+                        .addGap(40, 40, 40)
+                        .addComponent(jLabel3)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(maxStudentsField, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(algorithmButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(classCount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(exitButton))
                     .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -136,7 +141,10 @@ public final class Output extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(fitness)
                     .addComponent(algorithmButton)
-                    .addComponent(classCount))
+                    .addComponent(jLabel3)
+                    .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -158,24 +166,29 @@ public final class Output extends javax.swing.JFrame {
     }//GEN-LAST:event_floorListItemStateChanged
 
     private void algorithmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmButtonActionPerformed
-        dc.MetropolisAlgorithm(s);
-        fitness.setText("" + dc.getRoomFitness(s.schedule[roomList.getSelectedIndex()][floorList.getSelectedIndex()]));
-        dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+        try{
+            s = dc.MetropolisAlgorithm(s, Double.parseDouble(coolRateField.getText()),
+                    Integer.parseInt(maxStudentsField.getText()));
+            fitness.setText("" + dc.getRoomFitness(s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()]));
+            dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Debe ingresar un valor de enfriamiento!",
+                        "Campo vacío", JOptionPane.QUESTION_MESSAGE);
+            coolRateField.setText("");
+        }
     }//GEN-LAST:event_algorithmButtonActionPerformed
-
-    private void classCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classCountActionPerformed
-        JOptionPane.showMessageDialog(this, "Intente con un valor diferente!",
-                        "Conteo de clases", JOptionPane.QUESTION_MESSAGE);
-    }//GEN-LAST:event_classCountActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton algorithmButton;
-    private javax.swing.JButton classCount;
+    private javax.swing.JTextField coolRateField;
     private javax.swing.JButton exitButton;
     private javax.swing.JLabel fitness;
     private javax.swing.JComboBox floorList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JTextField maxStudentsField;
     private javax.swing.JComboBox roomList;
     // End of variables declaration//GEN-END:variables
 }
