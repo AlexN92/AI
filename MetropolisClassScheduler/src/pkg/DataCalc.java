@@ -11,19 +11,22 @@ package pkg;
  * @author Alex
  */
 public class DataCalc {
-    
+    Data d = new Data();
     Normal n = new Normal();
     
     // Generates a random room scheme, using the count of rooms and the Subjects
     // to sort.
-    RoomScheme generateRandomScheme(int floors, int roomsPerFloor, Subject[] s){
-        Subject[][] sub = new Subject[roomsPerFloor][floors];
+    RoomScheme generateRandomScheme(int days, int classTimes, Subject[] s){
+        Subject[][] sub = new Subject[days][classTimes];
+        RoomScheme r;
         
-        for(int i=0; i<roomsPerFloor; i++){
-            for(int j=0; j<floors; j++){
+        for(int i=0; i<days; i++){
+            for(int j=0; j<classTimes; j++){
                 sub[i][j] = s[(int)(Math.random()*(s.length))];
             }
-        } return new RoomScheme(sub);
+        } r = new RoomScheme(sub);
+        r.setFitness(getRoomFitness(r));
+        return r;
     }
     
     // How many free rooms are there in the room scheme for a specific
@@ -33,8 +36,21 @@ public class DataCalc {
         for (Subject[] room : r.rooms) {
             for (Subject room1 : room) {
                 if (room1.getCode() == 0) roomFitness --;
+                if (classCount(r, room1.getCode()) > 2) roomFitness --;
             }
         } return roomFitness;
+    }
+    
+    // Counts how many times is a class registered on a scheme
+    int classCount(RoomScheme r, int code){
+        int count = 0;
+        for (Subject[] room : r.rooms) {
+            for (int j = 0; j<r.rooms[0].length; j++) {
+                if (room[j].getCode() == code) {
+                    count ++;
+                }
+            }
+        } return count;
     }
     
     // A scheme's fitness
@@ -54,8 +70,10 @@ public class DataCalc {
         
         for(int k=0; k<r.length; k++){
             for(int m=0; m<r[0].length; m++){
-                r[k][m] = new RoomOutput(s.schedule[j][i].rooms[k][m].getCode(), s.schedule[j][i].rooms[k][m].getName(),
-                                         s.schedule[j][i].rooms[k][m].getMaxStudents());
+                r[k][m] = new RoomOutput(s.schedule[i][j].rooms[k][m].getCode(),
+                                         s.schedule[i][j].rooms[k][m].getName(),
+                                         s.schedule[i][j].rooms[k][m].getMaxStudents(),
+                                         s.schedule[i][j].rooms[k][m].getGroup());
                 r[k][m].setEditable(false);
                 r[k][m].setLocation(5 + 185*k, 65 + 55*m);
             }
@@ -67,30 +85,12 @@ public class DataCalc {
     void changeText(Schedule s, RoomOutput[][] r, int i, int j){
         for(int k=0; k<r.length; k++){
             for(int m=0; m<r[0].length; m++){
-                r[k][m].setTextName(s.schedule[j][i].rooms[k][m].getCode(),
-                                    s.schedule[j][i].rooms[k][m].getName(),
-                                    s.schedule[j][i].rooms[k][m].getMaxStudents());
+                r[k][m].setTextName(s.schedule[i][j].rooms[k][m].getCode(),
+                                    s.schedule[i][j].rooms[k][m].getName(),
+                                    s.schedule[i][j].rooms[k][m].getMaxStudents(),
+                                    s.schedule[i][j].rooms[k][m].getGroup());
             }
         }
-    }
-    
-    Subject[] generateSubjectGroup(int size, int[] code, int[] slot, String[] name){
-        Subject[] s = new Subject[size];
-        for(int i=0; i<size; i++){
-            if(code[i] != 0){
-                s[i] = new Subject(code[i], slot[i], name[i]);
-            } else {
-                s[i] = new Subject(0, 0, "Libre");
-            }
-        } return s;
-    }
-    
-    int[] generateNormalDistSlots(int size, int avg, int stdDev){
-        int[] slot = new int[size];
-        
-        for(int i=0; i<slot.length; i++){
-            slot[i] = (int) n.Normal(avg, stdDev);
-        } return slot;
     }
     
     // Using the room scheme's fitness, fullRooms(int fitness) evaluates
@@ -104,15 +104,46 @@ public class DataCalc {
         return r.rooms.length * r.rooms[0].length;
     }
     
+    double acceptanceProbability(int energy, int newEnergy, double temperature){
+        if(newEnergy < energy) return 1;
+        return Math.exp((energy - newEnergy) / temperature);
+    }
+    
     // Metropolis' Algorithm - Annealing Simulation
-    void MetropolisAlgorithm(Schedule s){
-        int[][] roomFitness = new int[s.schedule.length][s.schedule[0].length];
-        for(int i=0; i<roomFitness.length; i++){
-            for(int j=0; j<roomFitness[0].length; j++){
-                roomFitness[i][j] = getRoomFitness(s.schedule[i][j]);
+    Schedule MetropolisAlgorithm(Schedule s){
+        Schedule best = new Schedule(s.schedule);
+        double coolRate = 0.003;
+        double temp = s.schedule.length * s.schedule[0].length *
+                      s.schedule[0][0].rooms.length * s.schedule[0][0].rooms[0].length;
+        
+        while(temp > 1){
+            int ce = 0;
+            for (RoomScheme[] schedule : s.schedule) {
+                for (int j = 0; j<s.schedule[0].length; j++) {
+                    if (acceptanceProbability(ce, schedule[j].getFitness(), temp) > Math.random()) {
+                        for (Subject[] room : schedule[j].rooms) {
+                            for (int m = 0; m < schedule[j].rooms[0].length; m++) {
+                                if (classCount(schedule[j], room[m].getCode()) > 1) {
+                                    room[m].setMaxStudents((int)n.Normal(30, 5));
+                                    room[m].setGroup(room[m].getGroup() + 1);
+                                }
+                                if (schedule[j].getFitness() < 0 && classCount(schedule[j], 0) > (s.schedule[0][0].rooms.length * s.schedule[0][0].rooms[0].length / 3)) {
+                                    if (room[m].getCode() == 0) {
+                                        int x = (int)(d.code.length * Math.random());
+                                        Subject t = new Subject(d.code[x], (int)n.Normal(30, 5), 1, d.subjects[x]);
+                                        room[m] = t;
+                                    }                                  
+                                }
+                            }
+                        }
+                    }
+                    if(getScheduleFitness(s) < getScheduleFitness(best)){
+                        s = best;
+                    }
+                    ce = schedule[j].getFitness();
+                }
             }
-        }
-        
-        
+            temp *= 1 - coolRate;
+        } return best;
     }
 }

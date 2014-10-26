@@ -78,7 +78,7 @@ public class Input extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Sugerencia: Usar máximo 10 salones por piso, y un máximo de 5 pisos.");
+        jLabel4.setText("Sugerencia: Usar máximo 8 salones por piso, y un máximo de 5 pisos.");
 
         exit.setText("Salir");
         exit.addActionListener(new java.awt.event.ActionListener() {
@@ -147,14 +147,14 @@ public class Input extends javax.swing.JFrame {
             floors = Integer.parseInt(floorField.getText());
 
             if(roomsPerFloor < 2 || roomsPerFloor > 8 ||
-               floors <= 0 || floors > 5){
+               floors < 1 || floors > 5){
                 JOptionPane.showMessageDialog(this, "Intente con un valor diferente!",
                         "Valor fuera de rango", JOptionPane.QUESTION_MESSAGE);
                 roomField.setText("");
                 floorField.setText("");
             } else {
                 this.dispose();
-                Output o = new Output(floors, roomsPerFloor);
+                Output o = new Output();
                 o.setVisible(true);
             }
         } catch (NumberFormatException e) {

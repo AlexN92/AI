@@ -5,6 +5,9 @@
  */
 
 package pkg;
+
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Alex
@@ -15,17 +18,14 @@ public final class Output extends javax.swing.JFrame {
     Data d = new Data();
     Schedule s;
     RoomOutput[][] sched;
-    int floors, roomsPerFloor;
     
-    public Output(int floors, int roomsPerFloor) {
-        initComponents();
-        this.floors = floors;
-        this.roomsPerFloor = roomsPerFloor;        
-        s = new Schedule(new RoomScheme[6][5]);
+    public Output() {
+        initComponents();      
+        s = new Schedule(new RoomScheme[2][3]);
         
-        for(int k=0; k<6; k++){
-            for(int m=0; m<5; m++){
-                s.schedule[k][m] = dc.generateRandomScheme(floors, roomsPerFloor, d.subject);
+        for(int k=0; k<2; k++){
+            for(int m=0; m<3; m++){
+                s.schedule[k][m] = dc.generateRandomScheme(5, 6, d.subject);
             }
         }
         
@@ -35,63 +35,65 @@ public final class Output extends javax.swing.JFrame {
                 add(sched1[m]);
             }
         }
-        fitness.setText("" + dc.getRoomFitness(s.schedule[classTimeList.getSelectedIndex()][dayList.getSelectedIndex()]));
-        
-        dc.MetropolisAlgorithm(s);
+        fitness.setText("" + dc.getRoomFitness(s.schedule[roomList.getSelectedIndex()][floorList.getSelectedIndex()]));
+        setSize(5 + 185 * sched.length, 40 + 70 * sched[0].length);
     }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        exitButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        dayList = new javax.swing.JComboBox();
-        classTimeList = new javax.swing.JComboBox();
+        floorList = new javax.swing.JComboBox();
+        roomList = new javax.swing.JComboBox();
         jLabel2 = new javax.swing.JLabel();
         fitness = new javax.swing.JLabel();
+        algorithmButton = new javax.swing.JButton();
+        classCount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(java.awt.event.ComponentEvent evt) {
-                formComponentResized(evt);
-            }
-        });
 
-        jButton2.setText("Volver");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        exitButton.setText("Salir");
+        exitButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                exitButtonActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Salir");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        jLabel1.setText("Escoja un salón y un piso");
 
-        jLabel1.setText("Escoja un día y una franja");
-
-        dayList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Lunes", "Martes", "Miércoles", "Jueves", "Viernes" }));
-        dayList.addItemListener(new java.awt.event.ItemListener() {
+        floorList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Piso 1", "Piso 2" }));
+        floorList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                dayListItemStateChanged(evt);
+                floorListItemStateChanged(evt);
             }
         });
 
-        classTimeList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "7 - 9", "9 - 11", "11 - 13", "14 - 16", "16 - 18", "18 - 20" }));
-        classTimeList.addItemListener(new java.awt.event.ItemListener() {
+        roomList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Salón", "Sala de Informática", "Auditorio" }));
+        roomList.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                classTimeListItemStateChanged(evt);
+                roomListItemStateChanged(evt);
             }
         });
 
         jLabel2.setText("Fitness actual:");
 
         fitness.setText("0");
+
+        algorithmButton.setText("Ejecutar algoritmo!");
+        algorithmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                algorithmButtonActionPerformed(evt);
+            }
+        });
+
+        classCount.setText("Conteo de clases");
+        classCount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                classCountActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,21 +103,24 @@ public final class Output extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(floorList, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fitness)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addGap(12, 12, 12)
-                        .addComponent(jButton3)
-                        .addContainerGap())
+                        .addComponent(fitness)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(algorithmButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dayList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(classCount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(classTimeList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 24, Short.MAX_VALUE))))
+                        .addComponent(exitButton))
+                    .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,53 +128,54 @@ public final class Output extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(dayList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(classTimeList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(floorList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roomList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 135, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
+                    .addComponent(exitButton)
                     .addComponent(jLabel2)
-                    .addComponent(fitness))
+                    .addComponent(fitness)
+                    .addComponent(algorithmButton)
+                    .addComponent(classCount))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        this.dispose();
-        Input i = new Input();
-        i.setLocationRelativeTo(null);
-        i.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void formComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentResized
-        this.setSize(sched.length * 185 + 5, sched[0].length * 55 + 145);
-        this.setLocationRelativeTo(null);
-    }//GEN-LAST:event_formComponentResized
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
         System.exit(0);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_exitButtonActionPerformed
 
-    private void dayListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_dayListItemStateChanged
-        dc.changeText(s, sched, dayList.getSelectedIndex(), classTimeList.getSelectedIndex());
-        fitness.setText("" + dc.getRoomFitness(s.schedule[classTimeList.getSelectedIndex()][dayList.getSelectedIndex()]));
-    }//GEN-LAST:event_dayListItemStateChanged
+    private void roomListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roomListItemStateChanged
+        dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+        fitness.setText("" + dc.getRoomFitness(s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()]));
+    }//GEN-LAST:event_roomListItemStateChanged
 
-    private void classTimeListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_classTimeListItemStateChanged
-        dc.changeText(s, sched, dayList.getSelectedIndex(), classTimeList.getSelectedIndex());
-        fitness.setText("" + dc.getRoomFitness(s.schedule[classTimeList.getSelectedIndex()][dayList.getSelectedIndex()]));
-    }//GEN-LAST:event_classTimeListItemStateChanged
+    private void floorListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_floorListItemStateChanged
+        dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+        fitness.setText("" + dc.getRoomFitness(s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()]));
+    }//GEN-LAST:event_floorListItemStateChanged
+
+    private void algorithmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmButtonActionPerformed
+        dc.MetropolisAlgorithm(s);
+        fitness.setText("" + dc.getRoomFitness(s.schedule[roomList.getSelectedIndex()][floorList.getSelectedIndex()]));
+        dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+    }//GEN-LAST:event_algorithmButtonActionPerformed
+
+    private void classCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_classCountActionPerformed
+        JOptionPane.showMessageDialog(this, "Intente con un valor diferente!",
+                        "Conteo de clases", JOptionPane.QUESTION_MESSAGE);
+    }//GEN-LAST:event_classCountActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox classTimeList;
-    private javax.swing.JComboBox dayList;
+    private javax.swing.JButton algorithmButton;
+    private javax.swing.JButton classCount;
+    private javax.swing.JButton exitButton;
     private javax.swing.JLabel fitness;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JComboBox floorList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JComboBox roomList;
     // End of variables declaration//GEN-END:variables
 }

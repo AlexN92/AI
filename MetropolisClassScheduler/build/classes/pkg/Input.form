@@ -126,7 +126,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Sugerencia: Usar m&#xe1;ximo 10 salones por piso, y un m&#xe1;ximo de 5 pisos."/>
+        <Property name="text" type="java.lang.String" value="Sugerencia: Usar m&#xe1;ximo 8 salones por piso, y un m&#xe1;ximo de 5 pisos."/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="exit">

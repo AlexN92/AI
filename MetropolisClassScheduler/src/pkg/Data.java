@@ -6,6 +6,8 @@
 
 package pkg;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Alex
@@ -13,7 +15,8 @@ package pkg;
 public class Data {
     // You will say "Are you kidding me?! If there's no classes on Fridays after 16:00!!"
     // Yep, you're right... It's only an example! ;)
-    DataCalc dc = new DataCalc();
+    Normal n = new Normal();
+    
     
     int[] code = {0, 0, 0, 0, 0, 0, 2025995, 2025972, 2022615, 2016716, 
                   2025970, 1000047, 2016722, 2025994, 2025960, 2025966};
@@ -24,6 +27,32 @@ public class Data {
                          "Inglés IV", "Computación Paralela", "Sistemas de Comunicación",
                          "Computación Visual", "Lenguajes de Programación"};
     
-    int[] slots = dc.generateNormalDistSlots(16, 30, 5);
-    Subject[] subject = dc.generateSubjectGroup(16, code, slots, subjects);
+    Subject[] generateSubjectGroup(int size, int[] code, int[] slot, String[] name){
+        Subject[] s = new Subject[size];
+        ArrayList<Subject> arr = new ArrayList<>(size);
+        int t = 1;
+        for(int i=0; i<size; i++){
+            arr.add(new Subject(code[i], slot[i], t, name[i]));
+            s[i] = arr.get(i);
+        }
+        
+        for(int i=0; i<size; i++){
+            if(arr.get(i).getCode() == arr.get(size-1).getCode()){
+                s[i].setGroup(t+1);
+            } if(arr.get(i).getCode() == 0){
+                s[i].setMaxStudents(0);
+            }
+        } return s;
+    }
+    
+    int[] generateNormalDistSlots(int size, int avg, int stdDev){
+        int[] slot = new int[size];
+        
+        for(int i=0; i<slot.length; i++){
+            slot[i] = (int) n.Normal(avg, stdDev);
+        } return slot;
+    }
+    
+    int[] slots = generateNormalDistSlots(16, 30, 5);
+    Subject[] subject = generateSubjectGroup(16, code, slots, subjects);
 }
