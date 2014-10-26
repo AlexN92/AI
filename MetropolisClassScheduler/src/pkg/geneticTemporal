@@ -1,0 +1,151 @@
+//Clase Chromosome - Cromosoma
+/*
+* float fitness
+* RoomScheme[5][6] -  Subjects
+* Implementar comparator
+*/
+
+int population;
+int crosspoints;
+float crosspointProb;
+float mutationProb;
+
+//Schedule matriz [3][2]
+void fitnessCalc(Schedule[][] schedule){
+	ArrayList<Chromosome> chromoList = new ArrayList<Chromosome>();
+	for(int a=0; a<schedule.length; a++){
+		
+		Chromosome chromoA = schedule[0][0];
+		Chromosome chromoB = schedule[0][1];
+		Chromosome chromoC = schedule[1][0];
+		Chromosome chromoD = schedule[1][1];
+		Chromosome chromoE = schedule[2][0];
+		Chromosome chromoF = schedule[2][1];
+		
+		chromoA.fitness = this.fitness + checkSubject(chromoA);
+		chromoA.fitness = this.fitness + checkHours(chromoA);
+		chromoA.fitness = this.fitness + checkDay(chromoA);
+		chromoA = normalize(chromoA);
+		
+		chromoB.fitness = this.fitness + checkSubject(chromoB);
+		chromoB.fitness = this.fitness + checkHours(chromoB);
+		chromoB.fitness = this.fitness + checkDay(chromoB);
+		chromoB = normalize(chromoB);
+		
+		chromoC.fitness = this.fitness + checkSubject(chromoC);
+		chromoC.fitness = this.fitness + checkHours(chromoC);
+		chromoC.fitness = this.fitness + checkDay(chromoC);
+		chromoC = normalize(chromoC);
+		
+		chromoD.fitness = this.fitness + checkSubject(chromoD);
+		chromoD.fitness = this.fitness + checkHours(chromoD);
+		chromoD.fitness = this.fitness + checkDay(chromoD);
+		chromoD = normalize(chromoD);
+		
+		chromoE.fitness = this.fitness + checkSubject(chromoE);
+		chromoE.fitness = this.fitness + checkHours(chromoE);
+		chromoE.fitness = this.fitness + checkDay(chromoE);
+		chromoE = normalize(chromoE);
+		
+		chromoF.fitness = this.fitness + checkSubject(chromoF);
+		chromoF.fitness = this.fitness + checkHours(chromoF);
+		chromoF.fitness = this.fitness + checkDay(chromoF);
+		chromoF = normalize(chromoF);
+		
+		chromoList.add(chromoA);
+		chromoList.add(chromoB);
+		chromoList.add(chromoC);
+		chromoList.add(chromoD);
+		chromoList.add(chromoE);
+		chromoList.add(chromoF);
+	}
+	
+	Collections.sort(chromoList, comparator); //Por implementar el comparator
+}
+
+void selection(ArrayList<Chromosome> chromoList){
+	Chromosome auxChromo, crossChromoA, crossChromoB;
+	float fitnessSum = 0;
+	float randomChromo;
+	Iterator<Chromosome> itr;
+	ListIterator<Chromosome> litr;
+	
+	litr = chromoList.listIterator();
+	while(litr.hasNext()){
+		auxChromo = litr.next();	
+		fitnessSum = fitnessSum + auxChromo.fitness();
+		auxChromo.fitness = fitnessSum;
+		litr.set(auxChromo);
+	}
+	//Verificar fitness ultimo cromosoma sea 1
+	
+	for(int a=0; a<int(chromoList.size/2); a++){
+		
+		if(a==0){
+			//Escoja el mejor tal cual
+		}
+		else{
+			randomChromo = Math.random();
+			itr = chromoList.iterator();
+			while(itr.hasNext){
+				auxChromo = itr.next();
+				if(auxChromo.fitness>randomChromo){
+					crossChromoA = auxChromo;
+				}
+			}
+			
+			randomChromo = Math.random();
+			itr = chromoList.iterator();
+			while(itr.hasNext){
+				auxChromo = itr.next();
+				if(auxChromo.fitness>randomChromo){
+					crossChromoB = auxChromo;
+				}
+			}
+			
+			//Añadir nuevo cromosoma a solucion
+			crossover(crossChromoA,crossChromoB);
+		}
+	}
+}
+
+void mutation(Schedule[][] schedule){
+	float mutationChance;
+	for(int a=0; a<3; a++){
+		for(int b=0; b<2; b++){
+			mutationChance = Math.random();
+			if(mutationProb>mutationChance){
+				Chromosome chromo = schedule[a][b];
+				//Muta
+			}
+		}
+	}
+}
+
+Chromosome crossover(Chromosome chromoA, Chromosome chromoB){
+	return childChromo;
+}
+
+float checkSubject(){
+	return fitness;
+}
+
+float checkHours(){
+	return fitness;
+}
+
+float checkDay(){
+	return fitness;
+}
+
+float normalize(Crhomo chromo){
+	//Normalize fitness
+	for(int a=0; a<5; a++){
+		maxFitness = maxFitness + fitnessRoomA[a] +  fitnessRoomB[a];
+	}
+	
+	for(int a=0; a<5; a++){
+		fitnessRoomA[a] = fitnessRoomA[a]/maxFitness;
+		fitnessRoomB[a] = fitnessRoomB[a]/maxFitness;
+	}
+}
