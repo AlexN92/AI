@@ -20,6 +20,7 @@ public final class Output extends javax.swing.JFrame {
     RoomOutput[][] sched;
     
     public Output() {
+        super("Templado simulado");
         initComponents();      
         s = new Schedule(new RoomScheme[2][3]);
         
@@ -54,8 +55,10 @@ public final class Output extends javax.swing.JFrame {
         coolRateField = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         maxStudentsField = new javax.swing.JTextField();
+        aboutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         exitButton.setText("Salir");
         exitButton.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +98,13 @@ public final class Output extends javax.swing.JFrame {
 
         jLabel4.setText("Espacios libres (máx.)");
 
+        aboutButton.setText("Acerca de");
+        aboutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                aboutButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -110,21 +120,25 @@ public final class Output extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(fitness)
-                        .addGap(40, 40, 40)
+                        .addGap(18, 18, 18)
                         .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(maxStudentsField, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(algorithmButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(exitButton))
-                    .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(aboutButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -144,7 +158,8 @@ public final class Output extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aboutButton))
                 .addContainerGap())
         );
 
@@ -167,18 +182,26 @@ public final class Output extends javax.swing.JFrame {
 
     private void algorithmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmButtonActionPerformed
         try{
-            s = dc.MetropolisAlgorithm(s, Double.parseDouble(coolRateField.getText()),
-                    Integer.parseInt(maxStudentsField.getText()));
+            double d = Double.parseDouble(coolRateField.getText());
+            s = dc.MetropolisAlgorithm(s, d, Integer.parseInt(maxStudentsField.getText()));
             fitness.setText("" + dc.getRoomFitness(s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()]));
             dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Debe ingresar un valor de enfriamiento!",
-                        "Campo vacío", JOptionPane.QUESTION_MESSAGE);
+                        "Error de entrada", JOptionPane.ERROR_MESSAGE);
             coolRateField.setText("");
         }
     }//GEN-LAST:event_algorithmButtonActionPerformed
 
+    private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
+        JOptionPane.showMessageDialog(this, "Este programa uiliza el algoritmo de Templado Simulado (Simulated Annealing),\n"
+                                          + "el cual se basa en el proceso de modificar la consistencia de un metal para así\n"
+                                          + "mejorar sus características.",
+                        "Acerca del algoritmo", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_aboutButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton aboutButton;
     private javax.swing.JButton algorithmButton;
     private javax.swing.JTextField coolRateField;
     private javax.swing.JButton exitButton;
