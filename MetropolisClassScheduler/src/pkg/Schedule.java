@@ -15,8 +15,18 @@ package pkg;
 // Monday 7 - 9 am.
 public class Schedule{
     RoomScheme[][] schedule;
+    int fitness;
     
     public Schedule(RoomScheme[][] schedule) {
         this.schedule = schedule;
     }
+
+    public int getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(int fitness) {
+        this.fitness = fitness;
+    }
+
 }

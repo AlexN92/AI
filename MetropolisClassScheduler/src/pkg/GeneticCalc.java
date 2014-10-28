@@ -241,6 +241,7 @@ public class GeneticCalc {
                             for(int b=0; b<3; b++){
                                     if(newPopulation.schedule[a][b] == null){
                                             newPopulation.schedule[a][b] = auxParentA;
+                                            newPopulation.setFitness(newPopulation.getFitness() + newPopulation.schedule[a][b].getFitness()/6);
                                             populationCount++;
                                     }
                             }
@@ -254,12 +255,15 @@ public class GeneticCalc {
     int checkFitness(RoomScheme chromo){
         Subject subject;
         int fitness = 0;
-        ArrayList<Subject> subjectsChecked = new ArrayList<>();
+        ArrayList<Integer> subjectsChecked = new ArrayList<>();
         //Check conditions for 1 Subjects
         for(int a=0; a<5; a++){
           for(int b=0; b<6; b++){
             subject = chromo.rooms[a][b];
-            fitness =+ 1-(checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a));                
+            //if(subjectsChecked.indexOf(subject.getCode()) != -1){
+            fitness += 1-(checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a));                
+            subjectsChecked.add(subject.getCode());
+            //}
           }
         }
         return fitness;
@@ -267,10 +271,14 @@ public class GeneticCalc {
 
     int checkHours(RoomScheme chromo, int code){
       int counter=0;
+      int auxCounter=0;
       for(int a=0; a<5; a++){
         for(int b=0; b<6; b++){
           if(chromo.rooms[a][b].getCode() == code){
-            counter++;
+              auxCounter++;
+              if(auxCounter > 2){
+                  counter++;
+              }
           }
         }
       }
