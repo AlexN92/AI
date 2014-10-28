@@ -122,7 +122,10 @@ public class Input extends javax.swing.JFrame {
     }//GEN-LAST:event_aboutActionPerformed
 
     private void genAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genAlgoActionPerformed
-
+        this.dispose();
+        GeneticOutput go = new GeneticOutput();
+        go.setLocationRelativeTo(null);
+        go.setVisible(true);
     }//GEN-LAST:event_genAlgoActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
