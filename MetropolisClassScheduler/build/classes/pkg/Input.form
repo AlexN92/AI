@@ -27,33 +27,15 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="roomField" min="-2" pref="89" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="floorField" min="-2" pref="89" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="simulAnneal" max="32767" attributes="0"/>
+                  <Component id="about" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="about" alignment="0" max="32767" attributes="0"/>
-                  <Component id="organize" alignment="0" pref="119" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="clear" max="32767" attributes="0"/>
+                  <Component id="genAlgo" max="32767" attributes="0"/>
                   <Component id="exit" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -62,50 +44,26 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="organize" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="clear" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="floorField" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="simulAnneal" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="genAlgo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="about" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="exit" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                      <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="roomField" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="about" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="exit" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JButton" name="simulAnneal">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cantidad de pisos"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Cantidad de salones por piso"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="roomField">
-    </Component>
-    <Component class="javax.swing.JTextField" name="floorField">
-    </Component>
-    <Component class="javax.swing.JButton" name="organize">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Organizar!"/>
+        <Property name="text" type="java.lang.String" value="Templado simulado"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="organizeActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="simulAnnealActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="about">
@@ -116,18 +74,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aboutActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="clear">
+    <Component class="javax.swing.JButton" name="genAlgo">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Restaurar valores"/>
+        <Property name="text" type="java.lang.String" value="Algoritmo gen&#xe9;tico"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="genAlgoActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="jLabel4">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Sugerencia: Usar m&#xe1;ximo 8 salones por piso, y un m&#xe1;ximo de 5 pisos."/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="exit">
       <Properties>

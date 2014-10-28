@@ -29,6 +29,15 @@ public class DataCalc {
         return r;
     }
     
+    Schedule generateRandomSchedule(int x, int y, int i, int j){
+        Schedule s = new Schedule(new RoomScheme[x][y]);
+        for(int k=0; k<x; k++){
+            for(int m=0; m<y; m++){
+                s.schedule[k][m] = generateRandomScheme(i, j, d.subject);
+            }
+        } return s;
+    }
+    
     // How many free rooms are there in the room scheme for a specific
     // class time, i.e. Thursday at 11:00 - 13:00.
     int getRoomFitness(RoomScheme r){
@@ -124,7 +133,7 @@ public class DataCalc {
                             for (int m = 0; m < schedule[j].rooms[0].length; m++) {
                                 if (classCount(schedule[j], room[m].getCode()) > 1) {
                                     room[m].setMaxStudents((int)n.Normal(30, 5));
-                                    room[m].setGroup(room[m].getGroup() + 1);
+                                    room[m].setGroup(classCount(schedule[j], room[m].getCode())*m + 1);
                                 }
                                 if (schedule[j].getFitness() < 0 && classCount(schedule[j], 0) > quota && room[m].getCode() == 0) {
                                     int x = (int)(d.code.length * Math.random());

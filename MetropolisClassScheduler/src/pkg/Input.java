@@ -17,7 +17,7 @@ public class Input extends javax.swing.JFrame {
     private int roomsPerFloor, floors;
     
     public Input() {
-        super("Ingrese los datos iniciales...");
+        super("Programador de clases");
         initComponents();
     }
 
@@ -40,27 +40,18 @@ public class Input extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        roomField = new javax.swing.JTextField();
-        floorField = new javax.swing.JTextField();
-        organize = new javax.swing.JButton();
+        simulAnneal = new javax.swing.JButton();
         about = new javax.swing.JButton();
-        clear = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
+        genAlgo = new javax.swing.JButton();
         exit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jLabel1.setText("Cantidad de pisos");
-
-        jLabel2.setText("Cantidad de salones por piso");
-
-        organize.setText("Organizar!");
-        organize.addActionListener(new java.awt.event.ActionListener() {
+        simulAnneal.setText("Templado simulado");
+        simulAnneal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                organizeActionPerformed(evt);
+                simulAnnealActionPerformed(evt);
             }
         });
 
@@ -71,14 +62,12 @@ public class Input extends javax.swing.JFrame {
             }
         });
 
-        clear.setText("Restaurar valores");
-        clear.addActionListener(new java.awt.event.ActionListener() {
+        genAlgo.setText("Algoritmo genético");
+        genAlgo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                clearActionPerformed(evt);
+                genAlgoActionPerformed(evt);
             }
         });
-
-        jLabel4.setText("Sugerencia: Usar máximo 8 salones por piso, y un máximo de 5 pisos.");
 
         exit.setText("Salir");
         exit.addActionListener(new java.awt.event.ActionListener() {
@@ -94,87 +83,47 @@ public class Input extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(roomField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(floorField, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                    .addComponent(simulAnneal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(about, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(about, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(organize, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(clear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(genAlgo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(organize)
-                    .addComponent(clear)
-                    .addComponent(floorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(simulAnneal)
+                    .addComponent(genAlgo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(about)
-                        .addComponent(exit))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel2)
-                        .addComponent(roomField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(about)
+                    .addComponent(exit))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void organizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organizeActionPerformed
-        try {
-            roomsPerFloor = Integer.parseInt(roomField.getText());
-            floors = Integer.parseInt(floorField.getText());
-
-            if(roomsPerFloor < 2 || roomsPerFloor > 8 ||
-               floors < 1 || floors > 5){
-                JOptionPane.showMessageDialog(this, "Intente con un valor diferente!",
-                        "Valor fuera de rango", JOptionPane.QUESTION_MESSAGE);
-                roomField.setText("");
-                floorField.setText("");
-            } else {
-                this.dispose();
-                Output o = new Output();
-                o.setVisible(true);
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "No pueden haber campos vacíos, "
-                    + "y solo se pueden ingresar números positivos!",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            roomField.setText("");
-            floorField.setText("");
-        }
-    }//GEN-LAST:event_organizeActionPerformed
+    private void simulAnnealActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simulAnnealActionPerformed
+        this.dispose();
+        SimulatedAnnealingOutput s = new SimulatedAnnealingOutput();
+        s.setLocationRelativeTo(null);
+        s.setVisible(true);
+    }//GEN-LAST:event_simulAnnealActionPerformed
 
     private void aboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutActionPerformed
-        JOptionPane.showMessageDialog(this, "Este programa utiliza el algoritmo de "
-                + "Metrópolis para su funcionamiento.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "Programador de clases que ultiliza el algoritmo de templado simulado,\n"
+                                          + "o algoritmos genéticos, según ecoja el usuario.", "Información",
+                                          JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutActionPerformed
 
-    private void clearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearActionPerformed
-        roomField.setText("");
-        floorField.setText("");
-    }//GEN-LAST:event_clearActionPerformed
+    private void genAlgoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genAlgoActionPerformed
+
+    }//GEN-LAST:event_genAlgoActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
         System.exit(0);
@@ -182,13 +131,8 @@ public class Input extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton about;
-    private javax.swing.JButton clear;
     private javax.swing.JButton exit;
-    private javax.swing.JTextField floorField;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JButton organize;
-    private javax.swing.JTextField roomField;
+    private javax.swing.JButton genAlgo;
+    private javax.swing.JButton simulAnneal;
     // End of variables declaration//GEN-END:variables
 }

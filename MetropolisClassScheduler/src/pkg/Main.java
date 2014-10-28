@@ -18,9 +18,9 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Output o = new Output();
-        o.setLocationRelativeTo(null);
-        o.setVisible(true);
+        Input i = new Input();
+        i.setLocationRelativeTo(null);
+        i.setVisible(true);
         
     }
     
