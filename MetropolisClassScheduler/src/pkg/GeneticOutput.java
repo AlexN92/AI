@@ -217,10 +217,16 @@ public final class GeneticOutput extends javax.swing.JFrame {
             double crossChance = Float.parseFloat(crossover.getText());
             double mutationChance = Float.parseFloat(mutation.getText());
             int generationsNum = Integer.parseInt(generations.getText());
-            s = gc.geneticAlgorithm(s, crossChance, mutationChance, generationsNum);
-            fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
-            fitnessProm.setText("" + s.getFitness());
-            gc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+            if(0.0<crossChance && 0.0<mutationChance && crossChance<1.0 && mutationChance<1.0){
+                s = gc.geneticAlgorithm(s, crossChance, mutationChance, generationsNum);
+                fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
+                fitnessProm.setText("" + s.getFitness());
+                gc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Valores de cruce y mutacion invalidos!",
+                        "Error de entrada", JOptionPane.ERROR_MESSAGE);
+            }
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Debe ingresar valores de cruce, mutacion y generaciones!",
                         "Error de entrada", JOptionPane.ERROR_MESSAGE);

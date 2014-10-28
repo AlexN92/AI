@@ -261,7 +261,7 @@ public class GeneticCalc {
           for(int b=0; b<6; b++){
             subject = chromo.rooms[a][b];
             //if(subjectsChecked.indexOf(subject.getCode()) != -1){
-            fitness += 1-(checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a));                
+            fitness += checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a);                
             subjectsChecked.add(subject.getCode());
             //}
           }
@@ -277,7 +277,7 @@ public class GeneticCalc {
           if(chromo.rooms[a][b].getCode() == code){
               auxCounter++;
               if(auxCounter > 2){
-                  counter++;
+                  counter--;
               }
           }
         }
@@ -289,7 +289,7 @@ public class GeneticCalc {
       int counter=0;
       for(int a=0; a<6; a++){
         if(chromo.rooms[day][a].getCode() == code){
-          counter++;
+          counter--;
         }
       }
       return counter;
@@ -302,7 +302,7 @@ public class GeneticCalc {
         case 0:
           for(int a=0; a<6; a++){
             if(chromo.rooms[4][a].getCode() == code || chromo.rooms[1][a].getCode() == code){
-              counter++;
+              counter--;
             }
           }
         break;
@@ -310,7 +310,7 @@ public class GeneticCalc {
         case 1:
           for(int a=0; a<6; a++){
             if(chromo.rooms[0][a].getCode() == code || chromo.rooms[2][a].getCode() == code){
-              counter++;
+              counter--;
             }
           }
         break;
@@ -318,7 +318,7 @@ public class GeneticCalc {
         case 2:
           for(int a=0; a<6; a++){
             if(chromo.rooms[1][a].getCode() == code || chromo.rooms[3][a].getCode() == code){
-              counter++;
+              counter--;
             }
           }
         break;
@@ -326,7 +326,7 @@ public class GeneticCalc {
         case 3:
           for(int a=0; a<6; a++){
             if(chromo.rooms[2][a].getCode() == code || chromo.rooms[4][a].getCode() == code){
-              counter++;
+              counter--;
             }
           }
         break;
@@ -334,7 +334,7 @@ public class GeneticCalc {
         case 4:
           for(int a=0; a<6; a++){
             if(chromo.rooms[3][a].getCode() == code || chromo.rooms[0][a].getCode() == code){
-              counter++;
+              counter--;
             }
           }
         break;
