@@ -2,7 +2,6 @@
 /*
 * float fitness
 * RoomScheme scheme -  Subjects
-* Implementar comparator
 */
 
 int population;
@@ -15,12 +14,12 @@ void fitnessCalc(Schedule schedule){
 	ArrayList<RoomScheme> chromoList = new ArrayList<RoomScheme>();
 	for(int a=0; a<schedule.length; a++){
 		
-		RoomScheme chromoA = schedule[0][0];
-		RoomScheme chromoB = schedule[0][1];
-		RoomScheme chromoC = schedule[1][0];
-		RoomScheme chromoD = schedule[1][1];
-		RoomScheme chromoE = schedule[2][0];
-		RoomScheme chromoF = schedule[2][1];
+		RoomScheme chromoA = schedule.schedule[0][0];
+		RoomScheme chromoB = schedule.schedule[0][1];
+		RoomScheme chromoC = schedule.schedule[1][0];
+		RoomScheme chromoD = schedule.schedule[1][1];
+		RoomScheme chromoE = schedule.schedule[2][0];
+		RoomScheme chromoF = schedule.schedule[2][1];
 		
 		
 		chromoA.setFitness(checkFitness(chromoA));
@@ -37,72 +36,171 @@ void fitnessCalc(Schedule schedule){
 		chromoList.add(chromoE);
 		chromoList.add(chromoF);
 	}
-	
-	Collections.sort(chromoList, comparator); //Por implementar el comparator
 }
 
-//Pediente por arreglar, seleccion por torneo
-
-void selection(ArrayList<RoomScheme> chromoList){
-	RoomScheme auxChromo, crossChromoA, crossChromoB;
-	float fitnessSum = 0;
-	float randomChromo;
-	Iterator<RoomScheme> itr;
-	ListIterator<RoomScheme> litr;
+Schedule selection(ArrayList<RoomScheme> chromoList){
 	
-	litr = chromoList.listIterator();
-	while(litr.hasNext()){
-		auxChromo = litr.next();	
-		fitnessSum = fitnessSum + auxChromo.fitness();
-		auxChromo.fitness = fitnessSum;
-		litr.set(auxChromo);
-	}
+	Schedule newPopulation;
 	
-	for(int a=0; a<int(chromoList.size/2); a++){
-		
-		if(a==0){
-			//Escoja el mejor tal cual
-		}
-		else{
-			randomChromo = Math.random();
-			itr = chromoList.iterator();
-			while(itr.hasNext){
-				auxChromo = itr.next();
-				if(auxChromo.fitness>randomChromo){
-					crossChromoA = auxChromo;
-				}
-			}
-			
-			randomChromo = Math.random();
-			itr = chromoList.iterator();
-			while(itr.hasNext){
-				auxChromo = itr.next();
-				if(auxChromo.fitness>randomChromo){
-					crossChromoB = auxChromo;
-				}
-			}
-			
-			//Añadir nuevo cromosoma a solucion
-			crossover(crossChromoA,crossChromoB);
-		}
-	}
-}
-
-void mutation(Schedule[][] schedule){
-	float mutationChance;
+	RoomScheme[][] newChromosomes = new RoomScheme[3][2];
+	RoomScheme bestChromo = chromoList.get(0);
+	RoomScheme auxParentA, auxParentB, auxChromo;
+	
+	int bestChromoPost = 0;
+	int	populationCount = 0;
+	int crossPoint, a1, b1, a2, b2, auxMut;
+	
+	Iterator<RoomScheme> itr = chromoList.listIterator();
+	
+	ArrayList<RoomScheme> parents = new ArrayList<RoomScheme>();
+	ArrayList<Subject> auxSubjectA = new ArrayList<Subject>();
+	ArrayList<Subject> auxSubjectB = new ArrayList<Subject>();
+	
+	Subject auxSubject;
+	
+	Random rand = new Random();
+	
+	//Initialize new population
 	for(int a=0; a<3; a++){
 		for(int b=0; b<2; b++){
-			mutationChance = Math.random();
-			if(mutationProb>mutationChance){
-				RoomScheme chromo = schedule[a][b];
-				//Muta
+			Subject[][] subs = new Subject[5][6];
+			newChromosomes[a][b] = subs;
+		}
+	}
+	
+	newPopulation = new Schedule(newChromosomes);
+	
+	//Buscar el mejor y pasarlo tal cual
+	while(litr.hasNext()){
+		auxChromo = litr.next();
+		if(auxChromo.getFitness() > bestChromo.getFitness()){
+			bestChromo = auxChromo;
+			bestChromoPost = chromoList.indexOf(bestChromo);
+		}
+	}
+	
+	switch(bestChromoPost){
+		
+		case 0:
+			newPopulation.schedule[0][0] = bestChromo;
+		break;
+		
+		case 1:
+			newPopulation.schedule[0][1] = bestChromo;
+		break;
+		
+		case 2:
+			newPopulation.schedule[1][0] = bestChromo;
+		break;
+		
+		case 3:
+			newPopulation.schedule[1][1] = bestChromo;
+		break;
+		
+		case 4:
+			newPopulation.schedule[2][0] = bestChromo;
+		break;
+		
+		case 5:
+			newPopulation.schedule[2][1] = bestChromo;
+		break;
+	}
+	
+	
+	while(populationCount<5){
+		while(parents.size() != 2){
+			Roomscheme chromoCompA = chromoList.get(rand.nextInt(6));
+			Roomscheme chromoCompB = chromoList.get(rand.nextInt(6));
+			
+			//Tournament selection
+			if(chromoCompA.getFitness > chromoCompB.getFitness){
+				parents.add(chromoCompA);
+			}
+			else{
+				parents.add(chromoCompB);
+			}
+		} 
+		
+		//Generate new chromosomes
+		if(crosspointProb > rand.nextFloat()){
+			auxParentA = parents.get(0);
+			auxParentB = parents.get(1);
+			for(int a=0; a<2; a++){
+			  crossPoint=rand.nextInt(6);
+			  for(int  b=0; b<5; b++){
+				auxSubjectA.add(auxParentA.rooms[b][crossPoint]);
+				auxSubjectB.add(auxParentB.rooms[b][crossPoint]);
+			  }
+			  for(int c=0; c<5; c++){
+				auxParentA.rooms[c][crossPoint] = auxSubjectA.remove(0);
+				auxParentB.rooms[c][crossPoint] = auxSubjectB.remove(0);
+			  }
+			}
+			
+			parents.set(0,auxParentA);
+			parents.set(1,auxParentB);
+		}
+		
+		
+		while(parents.size() > 0){
+			auxParentA = parents.remove(0);
+			
+			//Mutation
+			if(mutationProb > rand.nextFloat()){
+				a = rand.nextInt(5);
+				b = rand.nextInt(6);
+				a2 = rand.nextInt(5);
+				b2 = rand.nextInt(6);
+				auxSubject = auxParentA.rooms[a][b];
+				auxParentA.rooms[a1[b1] = auxParentA.rooms[a2][b2];
+				auxParentA.rooms[a2][b2] = auxSubject;
+			}
+			
+			//Add new chromosome to solution
+			for(int a=0; a<5; a++){
+				for(int b=0; b<6; b++){
+					if(newPopulation.schedule[a][b] == null){
+						newPopulation.schedule[a][b] = auxParentA;
+					}
+				}
 			}
 		}
 	}
+	
+	return newPopulation;
 }
 
-RoomScheme crossover(RoomScheme chromoA, RoomScheme chromoB){
-	return childChromo;
+void mutation(RoomScheme chromo){
+  Random rand = new Random();
+  int a1 = rand.nextInt(5);
+  int b1 = rand.nextInt(6);
+  int a2 = rand.nextInt(5);
+  int b2 = rand.nextInt(6);
+  Subject auxSubject;
+  auxSubject = chromo.rooms[a1][b1];
+  chromo.rooms[a1][b1] = chromo.rooms[a2][b2];
+  chromo.rooms[a2][b2] = auxSubject;
+}
+
+RoomScheme crossover(RoomScheme chromoA, RoomScheme chromoB){  
+    Random rand = new Random();
+    int crossPoint;
+    ArrayList<Subject> auxSubjectA = new ArrayList<Subject>();
+    ArrayList<Subject> auxSubjectB = new ArrayList<Subject>();
+    
+    for(int a=0; a<2; a++){
+      crossPoint=rand.nextInt(6);
+      for(int  b=0; b<5; b++){
+		auxSubjectA.add(chromoA.rooms[b][crossPoint]);
+		auxSubjectB.add(chromoB.rooms[b][crossPoint]);
+      }
+      for(int c=0; c<5; c++){
+		chromoA.rooms[c][crossPoint] = auxSubjectA.remove(0);
+		chromoB.rooms[c][crossPoint] = auxSubjectB.remove(0);
+      }
+    }
+    
+    return childChromo;
 }
 
 float checkFitness(RoomScheme chromo){
@@ -186,16 +284,4 @@ int checkConsecutives(RoomScheme chromo, int code, int day){
     break;
   }
   return counter;
-}
-
-float normalize(Crhomo chromo){
-	//Normalize fitness
-	for(int a=0; a<5; a++){
-		maxFitness = maxFitness + fitnessRoomA[a] +  fitnessRoomB[a];
-	}
-	
-	for(int a=0; a<5; a++){
-		fitnessRoomA[a] = fitnessRoomA[a]/maxFitness;
-		fitnessRoomB[a] = fitnessRoomB[a]/maxFitness;
-	}
 }
