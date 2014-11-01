@@ -43,17 +43,26 @@
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="crossover" min="-2" pref="107" max="-2" attributes="0"/>
-                          <Component id="floorList" min="-2" pref="66" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="roomList" alignment="1" max="32767" attributes="0"/>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          <Component id="floorList" alignment="0" min="-2" pref="66" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="crossover" min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="mutation" min="-2" pref="68" max="-2" attributes="0"/>
+                              <Component id="mutation" min="-2" pref="30" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabel7" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="roomList" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
+                              <Component id="population" pref="53" max="32767" attributes="0"/>
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                               <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="generations" min="-2" pref="64" max="-2" attributes="0"/>
@@ -99,6 +108,8 @@
                   <Component id="aboutButton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="generations" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel7" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="population" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -174,6 +185,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="crossover">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.2"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="crossoverActionPerformed"/>
       </Events>
@@ -184,6 +198,12 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="mutation">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0.03"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mutationActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="aboutButton">
       <Properties>
@@ -199,6 +219,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="generations">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="500"/>
+      </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generationsActionPerformed"/>
       </Events>
@@ -212,6 +235,19 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel7">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Poblacion"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="population">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="100"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="populationActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
