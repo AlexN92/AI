@@ -25,7 +25,7 @@ public final class GeneticOutput extends javax.swing.JFrame {
     public GeneticOutput() {
         super("Algoritmo Genetico");
         initComponents();      
-        s = gc.generateRandomSchedule(2, 3, 5, 6);
+        /*s = gc.generateRandomSchedule(2, 3, 5, 6);
         
         sched = gc.printScheme(0, 0, s);
         for (RoomOutput[] sched1 : sched) {
@@ -33,7 +33,7 @@ public final class GeneticOutput extends javax.swing.JFrame {
                 add(sched1[m]);
             }
         }
-        fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
+        fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());*/
         //setSize(5 + 185 * sched.length, 30 + 75 * sched[0].length);
     }
     
@@ -86,7 +86,7 @@ public final class GeneticOutput extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Fitness:");
+        jLabel2.setText("Fitness actual:");
 
         fitness.setText("0");
 
@@ -158,9 +158,9 @@ public final class GeneticOutput extends javax.swing.JFrame {
                                 .addGap(33, 33, 33))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(fitness, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(fitness)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel3)
                                 .addGap(7, 7, 7)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,7 +193,7 @@ public final class GeneticOutput extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fitnessProm, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(fitnessProm)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -205,7 +205,7 @@ public final class GeneticOutput extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(floorList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(roomList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 119, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(exitButton)
                     .addComponent(jLabel2)
@@ -236,12 +236,12 @@ public final class GeneticOutput extends javax.swing.JFrame {
     private void roomListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roomListItemStateChanged
         System.out.println("Floor " + floorList.getSelectedIndex() + " Room " + roomList.getSelectedIndex());
         gc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
-        //fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
+        fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
     }//GEN-LAST:event_roomListItemStateChanged
 
     private void floorListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_floorListItemStateChanged
         gc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
-        //fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
+        fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
     }//GEN-LAST:event_floorListItemStateChanged
 
     private void algorithmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_algorithmButtonActionPerformed
@@ -250,15 +250,13 @@ public final class GeneticOutput extends javax.swing.JFrame {
             double mutationChance = Float.parseFloat(mutation.getText());
             int populationNum = Integer.parseInt(population.getText());
             int generationsNum = Integer.parseInt(generations.getText());
-            int fitnessProms = 0;
             /*double crossChance = 0.3;
             double mutationChance = 0.02;
             int populationNum = 2;
             int generationsNum = 10;*/
             if(0.0<crossChance && 0.0<mutationChance && crossChance<1.0 && mutationChance<1.0 && populationNum > 2){
                 //Generate random population
-                geneticPop.add(s);
-                for(int i=1; i<populationNum; i++){
+                for(int i=0; i<populationNum; i++){
                     geneticPop.add(gc.generateRandomSchedule(2, 3, 5, 6));
                     //System.out.println(geneticPop);
                             /*s = gc.generateRandomSchedule(2, 3, 5, 6);
@@ -271,21 +269,15 @@ public final class GeneticOutput extends javax.swing.JFrame {
                                 }
                                 fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());*/
                 }
-                //System.out.println("Floors: " +  floorList.getSelectedIndex());
-                //System.out.println("Rooms: " +  roomList.getSelectedIndex());
+                System.out.println("Floors: " +  floorList.getSelectedIndex());
+                System.out.println("Rooms: " +  roomList.getSelectedIndex());
                 //Last parameter is floors
                 geneticSol = gc.geneticAlgorithm(geneticPop, crossChance, mutationChance, generationsNum, populationNum);
-                fitness.setText("" + geneticSol.get(0).getFitness());
-                for(int i=0; i<geneticSol.size(); i++){
-                    /*System.out.println(fitnessProms);
-                    System.out.println(geneticSol.get(i).getFitness()   );*/
-                    //fitnessProms = fitnessProms + geneticSol.get(i).getFitness();
-                    fitnessProms =+ geneticSol.get(i).getFitness();
-                }
-                fitnessProm.setText("" + fitnessProms);
-                //System.out.println("Solucion tamaño: " + geneticSol.size());
-                //gc.printScheme(0, 0, geneticSol.get(0));
-                gc.changeText(geneticSol.get(floorList.getSelectedIndex()), sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
+                fitness.setText("" + geneticSol.get(floorList.getSelectedIndex()).getFitness());
+                fitnessProm.setText("" + (geneticSol.get(0).getFitness()+geneticSol.get(1).getFitness()+ geneticSol.get(5).getFitness())/3);
+                System.out.println("Solucion tamaño: " + geneticSol.size());
+                gc.printScheme(0, 0, geneticSol.get(0));
+                //gc.changeText(geneticSol.get(floorList.getSelectedIndex()), sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
             }
             else{
                 JOptionPane.showMessageDialog(this, "Valores de cruce y mutacion invalidos!",
