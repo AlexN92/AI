@@ -18,11 +18,10 @@ public class Data {
     Normal n = new Normal();
     
     
-    int[] code = {0, 0, 0, 0, 0, 0, 2025995, 2025972, 2022615, 2016716, 
+    int[] code = {0, 2025995, 2025972, 2022615, 2016716, 
                   2025970, 1000047, 2016722, 2025994, 2025960, 2025966};
     
-    String[] subjects = {"Libre", "Libre", "Libre", "Libre", "Libre", "Libre", 
-                         "Sistemas Inteligentes", "Criptografía",
+    String[] subjects = {"Libre", "Sistemas Inteligentes", "Criptografía",
                          "Alemán I", "Arquitectura de Software", "Modelos y Simulación",
                          "Inglés IV", "Computación Paralela", "Sistemas de Comunicación",
                          "Computación Visual", "Lenguajes de Programación"};
@@ -32,7 +31,8 @@ public class Data {
         ArrayList<Subject> arr = new ArrayList<>(size);
         int t = 1;
         for(int i=0; i<size; i++){
-            arr.add(new Subject(code[i], slot[i], t, name[i]));
+            int k = (int)(size * Math.random());
+            arr.add(new Subject(code[k % code.length], slot[k % slot.length], t, name[k % name.length]));
             s[i] = arr.get(i);
         }
         
@@ -53,6 +53,6 @@ public class Data {
         } return slot;
     }
     
-    int[] slots = generateNormalDistSlots(16, 30, 5);
-    Subject[] subject = generateSubjectGroup(16, code, slots, subjects);
+    int[] slots = generateNormalDistSlots(90, 30, 5);
+    Subject[] subject = generateSubjectGroup(90, code, slots, subjects);
 }

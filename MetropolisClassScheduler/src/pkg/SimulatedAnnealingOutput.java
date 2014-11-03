@@ -50,8 +50,8 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         maxStudentsField = new javax.swing.JTextField();
         aboutButton = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
-        fitnessProm = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        cycleCount = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -101,9 +101,9 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
             }
         });
 
-        jLabel5.setText("Fitness promedio:");
+        jLabel6.setText("Ciclos realizados: ");
 
-        fitnessProm.setText("0");
+        cycleCount.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -113,39 +113,36 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(floorList, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(fitness)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel3)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(algorithmButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(aboutButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(exitButton))))
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
+                        .addComponent(floorList, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(fitnessProm)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(fitness)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cycleCount)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
+                        .addComponent(roomList, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(coolRateField, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(maxStudentsField, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(algorithmButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(aboutButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(exitButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -169,8 +166,8 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
                     .addComponent(aboutButton))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(fitnessProm))
+                    .addComponent(jLabel6)
+                    .addComponent(cycleCount))
                 .addContainerGap())
         );
 
@@ -196,6 +193,8 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
             double cool = Double.parseDouble(coolRateField.getText());
             s = dc.MetropolisAlgorithm(s, cool, Integer.parseInt(maxStudentsField.getText()));
             fitness.setText("" + dc.getRoomFitness(s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()]));
+            
+            cycleCount.setText("" + s.getCycles());
             dc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Debe ingresar un valor de enfriamiento!",
@@ -207,7 +206,9 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
     private void aboutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aboutButtonActionPerformed
         JOptionPane.showMessageDialog(this, "Este programa uiliza el algoritmo de Templado Simulado (Simulated Annealing),\n"
                                           + "el cual se basa en el proceso de modificar la consistencia de un metal para así\n"
-                                          + "mejorar sus características.",
+                                          + "mejorar sus características."
+                                          + "\n\n- Índice de enfriamiento: Entre (0, 1]."
+                                          + "\n- Espacios libres: Entre [1,30].",
                         "Acerca del algoritmo", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_aboutButtonActionPerformed
 
@@ -215,15 +216,15 @@ public final class SimulatedAnnealingOutput extends javax.swing.JFrame {
     private javax.swing.JButton aboutButton;
     private javax.swing.JButton algorithmButton;
     private javax.swing.JTextField coolRateField;
+    private javax.swing.JLabel cycleCount;
     private javax.swing.JButton exitButton;
     private javax.swing.JLabel fitness;
-    private javax.swing.JLabel fitnessProm;
     private javax.swing.JComboBox floorList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField maxStudentsField;
     private javax.swing.JComboBox roomList;
     // End of variables declaration//GEN-END:variables

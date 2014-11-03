@@ -108,6 +108,10 @@ public class DataCalc {
         return fitness == 0;
     }
     
+    int codeSetting(int x){
+        return (int)(x+x +1 -Math.pow(-1, x))/4;
+    }
+    
     // The maximum possible fitness for a room scheme.
     int maxFitness(RoomScheme r){
         return r.rooms.length * r.rooms[0].length;
@@ -121,35 +125,48 @@ public class DataCalc {
     // Metropolis' Algorithm - Annealing Simulation
     Schedule MetropolisAlgorithm(Schedule s, double coolRate, int quota){
         Schedule best = new Schedule(s.schedule);
-        int ce = 0;
+        int ce = s.getFitness();
         double temp = s.schedule.length * s.schedule[0].length *
                       s.schedule[0][0].rooms.length * s.schedule[0][0].rooms[0].length;
-        
+        /*
+                     - ln(Temperature)
+            Cycles = -----------------
+                      ln(1 - coolRate)
+        */
+        best.setCycles((int)(-1*(Math.log(temp)/Math.log(1-coolRate))));
         while(temp > 1){
-            for (RoomScheme[] schedule : s.schedule) {
-                for (int j = 0; j<s.schedule[0].length; j++) {
-                    if (acceptanceProbability(ce, schedule[j].getFitness(), temp) > Math.random()) {
-                        for (Subject[] room : schedule[j].rooms) {
-                            for (int m = 0; m < schedule[j].rooms[0].length; m++) {
-                                if (classCount(schedule[j], room[m].getCode()) > 1) {
-                                    room[m].setMaxStudents((int)n.Normal(30, 5));
-                                    room[m].setGroup(classCount(schedule[j], room[m].getCode())*m + 1);
+            for (RoomScheme[] schedule : best.schedule) {
+                for (RoomScheme sch: schedule) {
+                    for (Subject[] room : sch.rooms) {
+                        for (int m = 0; m < sch.rooms[0].length; m++) {
+                            if (classCount(sch, 0) > quota){
+                                for(int w=0; w<(classCount(sch, 0)-quota); w++){
+                                    int z = (int)(Math.random()*(classCount(sch, 0) - quota));
+                                    Subject t = new Subject(d.code[z], (int)n.Normal(30, 5), 1, d.subjects[z]);
+                                    room[m] = t;
                                 }
-                                if (schedule[j].getFitness() < 0 && classCount(schedule[j], 0) > quota && room[m].getCode() == 0) {
-                                    int x = (int)(d.code.length * Math.random());
-                                    Subject t = new Subject(d.code[x], (int)n.Normal(30, 5), 1, d.subjects[x]);
-                                    room[m] = t;                          
+                            } if (classCount(sch, room[m].getCode()) > 2 && room[m].getCode() != 0) {
+                                room[m].setGroup(codeSetting(m)+1);
+                                for(int i=m; i>=0; i--){
+                                    if(room[m].getGroup() == room[i].getGroup()){
+                                        room[m].setMaxStudents((int)n.Normal(30, 5));
+                                        room[i].setMaxStudents(room[m].getMaxStudents());
+                                    }
                                 }
                             }
                         }
                     }
-                    if(getScheduleFitness(s) < getScheduleFitness(best)){
-                        s = best;
-                    }
-                    ce = schedule[j].getFitness();
                 }
             }
-            temp *= 1 - coolRate;
+            // if exp((currentEnergy - newEnergy) / temperature) > u ~ Uniform(0,1)
+            if (acceptanceProbability(ce, best.getFitness(), temp) > Math.random()){
+                s.schedule = best.schedule;
+            }
+            // if fitness(new) > fitness(current)
+            if(getScheduleFitness(best) > getScheduleFitness(s)){
+                best = s;
+                ce = best.getFitness();
+            } temp *= 1 - coolRate;
         } return best;
     }
 }
