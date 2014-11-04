@@ -34,7 +34,6 @@ public final class GeneticOutput extends javax.swing.JFrame {
             }
         }
         fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
-        //setSize(5 + 185 * sched.length, 30 + 75 * sched[0].length);
     }
     
     @SuppressWarnings("unchecked")
@@ -234,7 +233,6 @@ public final class GeneticOutput extends javax.swing.JFrame {
     }//GEN-LAST:event_exitButtonActionPerformed
 
     private void roomListItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_roomListItemStateChanged
-        System.out.println("Floor " + floorList.getSelectedIndex() + " Room " + roomList.getSelectedIndex());
         gc.changeText(s, sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
         //fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());
     }//GEN-LAST:event_roomListItemStateChanged
@@ -251,40 +249,18 @@ public final class GeneticOutput extends javax.swing.JFrame {
             int populationNum = Integer.parseInt(population.getText());
             int generationsNum = Integer.parseInt(generations.getText());
             int fitnessProms = 0;
-            /*double crossChance = 0.3;
-            double mutationChance = 0.02;
-            int populationNum = 2;
-            int generationsNum = 10;*/
             if(0.0<crossChance && 0.0<mutationChance && crossChance<1.0 && mutationChance<1.0 && populationNum > 2){
                 //Generate random population
                 geneticPop.add(s);
                 for(int i=1; i<populationNum; i++){
                     geneticPop.add(gc.generateRandomSchedule(2, 3, 5, 6));
-                    //System.out.println(geneticPop);
-                            /*s = gc.generateRandomSchedule(2, 3, 5, 6);
-        
-                                sched = gc.printScheme(0, 0, s);
-                                for (RoomOutput[] sched1 : sched) {
-                                    for (int m = 0; m<sched[0].length; m++) {
-                                        add(sched1[m]);
-                                    }
-                                }
-                                fitness.setText("" + s.schedule[floorList.getSelectedIndex()][roomList.getSelectedIndex()].getFitness());*/
                 }
-                //System.out.println("Floors: " +  floorList.getSelectedIndex());
-                //System.out.println("Rooms: " +  roomList.getSelectedIndex());
-                //Last parameter is floors
                 geneticSol = gc.geneticAlgorithm(geneticPop, crossChance, mutationChance, generationsNum, populationNum);
                 fitness.setText("" + geneticSol.get(0).getFitness());
                 for(int i=0; i<geneticSol.size(); i++){
-                    /*System.out.println(fitnessProms);
-                    System.out.println(geneticSol.get(i).getFitness()   );*/
-                    //fitnessProms = fitnessProms + geneticSol.get(i).getFitness();
                     fitnessProms =+ geneticSol.get(i).getFitness();
                 }
                 fitnessProm.setText("" + fitnessProms);
-                //System.out.println("Solucion tamaño: " + geneticSol.size());
-                //gc.printScheme(0, 0, geneticSol.get(0));
                 gc.changeText(geneticSol.get(floorList.getSelectedIndex()), sched, floorList.getSelectedIndex(), roomList.getSelectedIndex());
             }
             else{

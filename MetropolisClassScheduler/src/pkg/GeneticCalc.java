@@ -32,7 +32,7 @@ public class GeneticCalc {
             }
         } 
         r = new RoomScheme(sub);
-        //r.setFitness(getRoomFitness(r));
+        r.setFitness(0);
         return r;
     }
     
@@ -89,6 +89,7 @@ public class GeneticCalc {
         //Schedule(new RoomScheme[2][3]);
         ArrayList<Schedule> solution = new ArrayList<>();
         for(int a=0; a<generations; a++){
+            //chromosomes = clearFitness(schedule);
             chromosomes = fitnessCalc(schedule);
             solution = generate(chromosomes, crossoverProb, mutationProb, population);
             //schedule = generate(chromosomes, crossoverProb, mutationProb);
@@ -99,6 +100,9 @@ public class GeneticCalc {
     ArrayList<Schedule> fitnessCalc(ArrayList<Schedule> schedule){
 	ArrayList<Schedule> scheduleFit = new ArrayList<>();
 	Schedule chromoSchedule;
+        
+        //for(int i=0; i)
+        
         for(int a=0; a<schedule.size(); a++){
 	
             chromoSchedule = schedule.get(a);
@@ -123,37 +127,28 @@ public class GeneticCalc {
             chromoSchedule.schedule[0][2] = roomE;
             chromoSchedule.schedule[1][2] = roomF;
             
+            //chromoSchedule.setFitness(roomA.getFitness());
             chromoSchedule.setFitness(roomA.getFitness() + roomB.getFitness() + roomC.getFitness() + roomD.getFitness()+
                                       roomE.getFitness() + roomF.getFitness());
             
             scheduleFit.add(chromoSchedule);
 	}
-        return schedule;
+        return scheduleFit;
     }
     
     ArrayList<Schedule> generate(ArrayList<Schedule> chromoList, double crossoverProb, double mutationProb, int population){
 	
-	//Schedule newPopulation = new Schedule(new RoomScheme[2][3]);
 	ArrayList<Schedule> newPopulation = new ArrayList<>();
-	//RoomScheme[][] newChromosomes = new RoomScheme[3][2];
-	//RoomScheme bestChromo = chromoList.get(0);
-	//RoomScheme auxParentA, auxParentB, auxChromo;
 	Schedule bestChromo = chromoList.get(0);
-        Schedule auxParentA, auxParentB, auxChromo;
+        Schedule auxParentA, auxParentB; // auxChromo;
         
-	//int bestChromoPost = 0;
-        //int parentAPost, parentBPost;
 	int populationCount = 0;
-	int crossPoint, a1, b1, a2, b2; //, auxMut;
+	int crossPoint, a1, b1, a2, b2;
 	
 	//Iterator<RoomScheme> itr = chromoList.listIterator();
-        Iterator<Schedule> itr = chromoList.listIterator();
+        //Iterator<Schedule> itr = chromoList.listIterator();
 	
-	/*ArrayList<RoomScheme> parents = new ArrayList<>();
-	ArrayList<Subject> auxSubjectA = new ArrayList<>();
-	ArrayList<Subject> auxSubjectB = new ArrayList<>();*/
-        
-        ArrayList<Schedule> parents = new ArrayList<>();
+	ArrayList<Schedule> parents = new ArrayList<>();
 	ArrayList<RoomScheme> auxRoomA = new ArrayList<>();
 	ArrayList<RoomScheme> auxRoomB = new ArrayList<>();
 	
@@ -163,14 +158,7 @@ public class GeneticCalc {
 	
 	//Take best chromosome has it is
 	Collections.sort(chromoList);
-        /*while(itr.hasNext()){
-		auxChromo = itr.next();
-		if(auxChromo.getFitness() > bestChromo.getFitness()){
-			bestChromo = auxChromo;
-			//bestChromoPost = chromoList.indexOf(bestChromo);
-		}
-	}*/
-	
+     
         if(population%2 == 0){
             newPopulation.add(chromoList.get(0));
             newPopulation.add(chromoList.get(1));
@@ -181,47 +169,15 @@ public class GeneticCalc {
             populationCount++;
         }
         
-	/*switch(bestChromoPost){
-		
-		case 0:
-                    newPopulation.schedule[0][0] = bestChromo;
-		break;
-		
-		case 1:
-                    newPopulation.schedule[1][0] = bestChromo;
-		break;
-		
-		case 2:
-                    newPopulation.schedule[0][1] = bestChromo;
-		break;
-		
-		case 3:
-                    newPopulation.schedule[1][1] = bestChromo;
-		break;
-		
-		case 4:
-                    newPopulation.schedule[0][2] = bestChromo;
-		break;
-		
-		case 5:
-                    newPopulation.schedule[1][2] = bestChromo;
-		break;
-	}*/
-	
-	
 	while(populationCount<population){
             while(parents.size() != 2){
                 Schedule chromoCompA = chromoList.get(rand.nextInt(population)); 
                 Schedule chromoCompB = chromoList.get(rand.nextInt(population)); 
-                //parentAPost = rand.nextInt(6);
-                //parentBPost = rand.nextInt(6);
                 
                 //Choose different parents
                 while(chromoCompA.equals(chromoCompB)){
                     chromoCompB = chromoList.get(rand.nextInt(population));
                 }
-                //RoomScheme chromoCompA = chromoList.get(parentAPost);
-                //RoomScheme chromoCompB = chromoList.get(parentBPost);
                 
                 //Tournament selection
                 if(chromoCompA.getFitness() > chromoCompB.getFitness()){
@@ -245,8 +201,6 @@ public class GeneticCalc {
                       for(int c=0; c<3; c++){
                             auxParentA.schedule[crossPoint][c] = auxRoomA.remove(0);
                             auxParentB.schedule[crossPoint][c] = auxRoomB.remove(0);
-                            /*auxParentA.rooms[c][crossPoint] = auxSubjectA.remove(0);
-                            auxParentB.rooms[c][crossPoint] = auxSubjectB.remove(0);*/
                       }
                     }
                     
@@ -269,30 +223,17 @@ public class GeneticCalc {
                             auxScheme = auxParentA.schedule[a1][b1];
                             auxParentA.schedule[a1][b1] = auxParentA.schedule[a2][b2];
                             auxParentA.schedule[a2][b2] = auxScheme;
-                            /*auxSubject = auxParentA.rooms[a1][b1];
-                            auxParentA.rooms[a1][b1] = auxParentA.rooms[a2][b2];
-                            auxParentA.rooms[a2][b2] = auxSubject;*/
                     }
                     
                     //Add new chromosome to solution
                     newPopulation.add(auxParentA);
                     populationCount++;
-                    /*for(int a=0; a<2; a++){
-                            for(int b=0; b<3; b++){
-                                    newPopulation.add(auxParentA);
-                                    /*if(newPopulation.schedule[a][b] == null){
-                                            newPopulation.schedule[a][b] = auxParentA;
-                                            newPopulation.setFitness(newPopulation.getFitness() + newPopulation.schedule[a][b].getFitness()/6);
-                                            populationCount++;
-                                    }*/
-                            //}
-                    //}
             }
 	}	
         
         Collections.sort(newPopulation);
-        //System.out.println("Population Final: " + newPopulation.size());
-	return newPopulation;
+        
+        return newPopulation;
     }
     
     int checkFitness(RoomScheme chromo){
@@ -303,10 +244,8 @@ public class GeneticCalc {
         for(int a=0; a<5; a++){
           for(int b=0; b<6; b++){
             subject = chromo.rooms[a][b];
-            //if(subjectsChecked.indexOf(subject.getCode()) != -1){
-            fitness += checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a);                
+            fitness = fitness + checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a);                
             subjectsChecked.add(subject.getCode());
-            //}
           }
         }
         return fitness;
