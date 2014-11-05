@@ -86,13 +86,10 @@ public class GeneticCalc {
     
     ArrayList<Schedule> geneticAlgorithm(ArrayList<Schedule> schedule, double crossoverProb, double mutationProb, int generations, int population){
         ArrayList<Schedule> chromosomes;
-        //Schedule(new RoomScheme[2][3]);
         ArrayList<Schedule> solution = new ArrayList<>();
         for(int a=0; a<generations; a++){
-            //chromosomes = clearFitness(schedule);
             chromosomes = fitnessCalc(schedule);
             solution = generate(chromosomes, crossoverProb, mutationProb, population);
-            //schedule = generate(chromosomes, crossoverProb, mutationProb);
         }   
         return solution;
     }
@@ -158,7 +155,7 @@ public class GeneticCalc {
 	
 	//Take best chromosome has it is
 	Collections.sort(chromoList);
-     
+        
         if(population%2 == 0){
             newPopulation.add(chromoList.get(0));
             newPopulation.add(chromoList.get(1));
@@ -170,6 +167,7 @@ public class GeneticCalc {
         }
         
 	while(populationCount<population){
+            
             while(parents.size() != 2){
                 Schedule chromoCompA = chromoList.get(rand.nextInt(population)); 
                 Schedule chromoCompB = chromoList.get(rand.nextInt(population)); 
@@ -209,8 +207,7 @@ public class GeneticCalc {
                     parents.add(auxParentB);
             }
 
-
-            while(parents.size() > 0 && populationCount<100){
+            while(parents.size() > 0){
                     auxParentA = parents.remove(0);
 
                     //Mutation
@@ -226,8 +223,15 @@ public class GeneticCalc {
                     }
                     
                     //Add new chromosome to solution
-                    newPopulation.add(auxParentA);
-                    populationCount++;
+                    if(population-2 > populationCount){
+                        newPopulation.add(auxParentA);
+                        populationCount++;
+                    }
+                    else{
+                        newPopulation.add(auxParentA);
+                        populationCount++;
+                        break;
+                    }   
             }
 	}	
         
@@ -244,7 +248,9 @@ public class GeneticCalc {
         for(int a=0; a<5; a++){
           for(int b=0; b<6; b++){
             subject = chromo.rooms[a][b];
-            fitness = fitness + checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a);                
+            if(subjectsChecked.indexOf(subject.getCode()) == -1){
+                fitness = fitness + checkHours(chromo, subject.getCode())+checkRepeat(chromo, subject.getCode(), a)+checkConsecutives(chromo, subject.getCode(), a);                
+            }
             subjectsChecked.add(subject.getCode());
           }
         }
